@@ -1,0 +1,62 @@
+@startuml Climalert
+
+
+
+  class WeatherApiClient <<Component>> {
+    - properties: WeatherApiProperties
+    - restClient: RestClient
+    + obtenerClimaActual(): RegistroClimatico
+  }
+
+  class RegistroClimatico {
+    - fechaHora: LocalDateTime
+    - temperatura: double
+    - humedad: double
+    - condicion: String
+    - ubicacion: String
+    + esCondicionCritica(): boolean
+    + getFechaHora(): LocalDateTime
+    + getTemperatura(): double
+    + getHumedad(): double
+    + getCondicion(): String
+    + getUbicacion(): String
+  }
+
+  class ReceptorTemperatura {
+    - accionador: Accionador
+    + evaluar(dato: RegistroClimatico): void
+  }
+
+    interface Comando {
+      + accionar(registro: RegistroClimatico): void
+      + descripcion(): String
+    }
+
+    class Accionador {
+      - comandos: List<Comando>
+      + accionar(registro: RegistroClimatico): void
+    }
+
+    class MandarMails {
+      - DESTINATARIOS: String[] {static}
+      - notificador: Notificador
+      - remitente: String
+      + accionar(registro: RegistroClimatico): void
+      + descripcion(): String
+      - construirCuerpo(registro: RegistroClimatico): String
+    }
+
+
+
+    class Notificador {
+      + enviarMail(remitente: String, destinatarios: String[], asunto: String, cuerpo: String): void
+    }
+
+
+
+MandarMails ..|> Comando
+WeatherApiClient ..> RegistroClimatico
+ReceptorTemperatura --> Accionador
+Accionador --> "*" Comando
+MandarMails --> Notificador
+@enduml
