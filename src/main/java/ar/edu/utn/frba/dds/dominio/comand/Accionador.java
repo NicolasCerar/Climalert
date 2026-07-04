@@ -12,7 +12,7 @@ public class Accionador {
   private final List<Comando> comandos;
 
   public Accionador(List<Comando> comandos) {
-    this.comandos = comandos;
+    this.comandos = List.copyOf(comandos);
   }
 
   public void accionar(RegistroClimatico registro) {

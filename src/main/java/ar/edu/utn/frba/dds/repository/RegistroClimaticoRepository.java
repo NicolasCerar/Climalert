@@ -1,7 +1,6 @@
 package ar.edu.utn.frba.dds.repository;
 
 import ar.edu.utn.frba.dds.dominio.RegistroClimatico;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

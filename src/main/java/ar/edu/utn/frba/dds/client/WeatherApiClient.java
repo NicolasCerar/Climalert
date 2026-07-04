@@ -11,6 +11,7 @@ public class WeatherApiClient {
   private final WeatherApiProperties properties;
   private final RestClient restClient;
 
+
   public WeatherApiClient(WeatherApiProperties properties) {
     this.properties = properties;
     this.restClient = RestClient.create();
@@ -26,6 +27,11 @@ public class WeatherApiClient {
         .retrieve()
         .body(new ParameterizedTypeReference<Map<String, Object>>() {
         });
+
+    if (response == null || response.get("current") == null) {
+      throw new IllegalStateException("WeatherAPI no devolvió datos válidos");
+    }
+
 
     Map<String, Object> location = (Map<String, Object>) response.get("location");
     Map<String, Object> current = (Map<String, Object>) response.get("current");
